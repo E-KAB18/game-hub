@@ -1,5 +1,6 @@
 import {
 	Button,
+	Heading,
 	HStack,
 	Image,
 	List,
@@ -13,7 +14,7 @@ import GenreItemSkeleton from "./GenreItemSkeleton";
 
 interface props {
 	onSelectGenre: (genre: Genre) => void;
-	selectedGenre: Genre | null
+	selectedGenre: Genre | null;
 }
 const GenreList = ({ onSelectGenre, selectedGenre }: props) => {
 	const { data, isLoading, error } = useGenres();
@@ -22,30 +23,38 @@ const GenreList = ({ onSelectGenre, selectedGenre }: props) => {
 	if (error) return null;
 	// if (isLoading) return <Spinner />;
 	return (
-		<List>
-			{isLoading &&
-				skeletons.map((skeleton) => <GenreItemSkeleton key={skeleton} />)}
+		<>
+			<Heading fontSize="2xl" marginBottom={3}>
+				Genres
+			</Heading>
+			<List>
+				{isLoading &&
+					skeletons.map((skeleton) => <GenreItemSkeleton key={skeleton} />)}
 
-			{data.map((genre) => (
-				<ListItem key={genre.id} paddingY="5px">
-					<HStack>
-						<Image
-							boxSize="32px"
-							borderRadius={8}
-							src={getCropedImageUrl(genre.image_background)}
-						/>
-						<Button
-							fontSize="lg"
-							variant="link"
-							onClick={() => onSelectGenre(genre)}
-							fontWeight={genre.id === selectedGenre?.id ?"bold":"normal"}
-						>
-							{genre.name}
-						</Button>
-					</HStack>
-				</ListItem>
-			))}
-		</List>
+				{data.map((genre) => (
+					<ListItem key={genre.id} paddingY="5px">
+						<HStack>
+							<Image
+								boxSize="32px"
+								borderRadius={8}
+								objectFit="cover"
+								src={getCropedImageUrl(genre.image_background)}
+							/>
+							<Button
+								fontSize="lg"
+								variant="link"
+								onClick={() => onSelectGenre(genre)}
+								fontWeight={genre.id === selectedGenre?.id ? "bold" : "normal"}
+								whiteSpace="normal"
+								textAlign="left"
+							>
+								{genre.name}
+							</Button>
+						</HStack>
+					</ListItem>
+				))}
+			</List>
+		</>
 	);
 };
 
